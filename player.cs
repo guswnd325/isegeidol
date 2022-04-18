@@ -18,22 +18,17 @@ public class Player : MonoBehaviour
     private void Update()
     {
 		float x = Input.GetAxisRaw("Horizontal");
-		if (Input.GetKeyDown(KeyCode.RightArrow))
+		if (Input.GetKey(KeyCode.RightArrow))
         {
-			isRight = true;
-        }
-		if (Input.GetKeyUp(KeyCode.RightArrow))
-		{
-			isRight = false;
+			transform.Translate(new Vector3(1f, 0f, 0f).normalized * Time.deltaTime * speed);
 		}
-		if (Input.GetKeyDown(KeyCode.LeftArrow))
+		
+		if (Input.GetKey(KeyCode.LeftArrow))
 		{
-			isLeft = true;
+			transform.Translate(new Vector3(-1f, 0f, 0f).normalized * Time.deltaTime * speed);
+
 		}
-		if (Input.GetKeyUp(KeyCode.LeftArrow))
-		{
-			isLeft = false;
-		}
+	
 		transform.Translate(new Vector3(x, 0f, 0f).normalized * Time.deltaTime * speed);
 		if (isLeft)
 		{
@@ -49,6 +44,16 @@ public class Player : MonoBehaviour
 			rigid.AddForce(Vector3.up * jumpPower, ForceMode2D.Impulse);
 			jumpCount--;
 		}
+		Debug.DrawRay(transform.position, Vector2.down, Color.red);
+
+		if (rigid.velocity.y < 0)
+		{
+			if (Physics2D.Raycast(rigid.position, Vector2.down, 0.4f, LayerMask.GetMask(new string[] { "platform" })))
+			{
+				jumpCount = 2;
+			}
+		}
+		
 	}
 
 }
