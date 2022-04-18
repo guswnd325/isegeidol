@@ -17,7 +17,6 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-		float x = Input.GetAxisRaw("Horizontal");
 		if (Input.GetKey(KeyCode.RightArrow))
         {
 			transform.Translate(new Vector3(1f, 0f, 0f).normalized * Time.deltaTime * speed);
